@@ -18,13 +18,17 @@ class _BashSession:
     _timeout: float = 120.0  # seconds
     _sentinel: str = "<<exit>>"
 
-    def __init__(self):
+    def __init__(self, initial_dir = None):
         self._started = False
         self._timed_out = False
+        self.initial_dir = initial_dir
 
     async def start(self):
         if self._started:
             return
+
+        if self.initial_dir:
+            os.chdir(self.initial_dir)
 
         self._process = await asyncio.create_subprocess_shell(
             self.command,
@@ -123,13 +127,13 @@ class BashTool(BaseAnthropicTool):
         if restart:
             if self._session:
                 self._session.stop()
-            self._session = _BashSession()
+            self._session = _BashSession(initial_dir=os.path.expanduser("~/git"))
             await self._session.start()
 
             return ToolResult(system="tool has been restarted.")
 
         if self._session is None:
-            self._session = _BashSession()
+            self._session = _BashSession(initial_dir=os.path.expanduser("~/git"))
             await self._session.start()
 
         if command is not None:
