@@ -149,9 +149,9 @@ async def main():
                 st.session_state.clear()
                 setup_state()
 
-                subprocess.run("pkill Xvfb; pkill tint2", shell=True)  # noqa: ASYNC221
-                await asyncio.sleep(1)
-                subprocess.run("./start_all.sh", shell=True)  # noqa: ASYNC221
+                # subprocess.run("pkill Xvfb; pkill tint2", shell=True)  # noqa: ASYNC221
+                # await asyncio.sleep(1)
+                # subprocess.run("./start_all.sh", shell=True)  # noqa: ASYNC221
 
     if not st.session_state.auth_validated:
         if auth_error := validate_auth(
