@@ -90,6 +90,10 @@ def _reset_model():
     ]
 
 
+def _stop_streamlit():
+    os._exit(0)
+
+
 async def main():
     """Render loop for streamlit"""
     setup_state()
@@ -152,6 +156,9 @@ async def main():
                 # subprocess.run("pkill Xvfb; pkill tint2", shell=True)  # noqa: ASYNC221
                 # await asyncio.sleep(1)
                 # subprocess.run("./start_all.sh", shell=True)  # noqa: ASYNC221
+
+        if st.button("Stop", type="primary"):
+            _stop_streamlit()
 
     if not st.session_state.auth_validated:
         if auth_error := validate_auth(
